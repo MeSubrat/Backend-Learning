@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules  src/index.js"
-
   },
   "keywords": [
     "backend"
@@ -18,6 +17,9 @@
     "prettier": "^3.5.2"
   },
   "dependencies": {
+    "cookie-parse": "^0.4.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.10.1"
