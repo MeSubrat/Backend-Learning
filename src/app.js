@@ -18,6 +18,18 @@ app.use(express.static("public")) //This is a public folder to store public data
 
 app.use(cookieParser()) //To perform CRUD operations in cookies in browser.
 
+//routes import 
+import userRouter from './routes/user.routes.js'
+
+
+//routes declaration
+app.use("/users",userRouter)
+
+//If we are defining our api then we can write routes for register like this: 
+app.use("/api/v1/users",userRouter) //URL: https://localhost:8000/api/v1/users/register
+//Here v1: verson of api
+
+
 
 // export default app;
 export {app}
