@@ -8,17 +8,19 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
     /*Steps for registering a user:) 
-    - Get user details from frontend(e.g using react or postman),
-    - Validation(e.g check empty fields),
-    - Check if user alraedy exists:  [check using username, email]
-    - Check for images, check for avatar
-    - Upload them to cloudinary, 
-    - Also check in cloudinary that avatar is received or not,
-    - Create user object - create entry in DB,
-    - Remove password and refresh token field from response,
-    - Check for user creation
-    - Return res
+    - Get user details from frontend(e.g using react or postman),✅
+    - Validation(e.g check empty fields),✅
+    - Check if user alraedy exists:  [check using username, email] ✅
+    - Check for images, check for avatar✅
+    - Upload them to cloudinary, ✅
+    - Also check in cloudinary that avatar is received or not,✅
+    - Create user object - create entry in DB,✅
+    - Remove password and refresh token field from response,✅
+    - Check for user creation✅
+    - Return res✅
     */
+
+    //User Details receiving from frontend
     const { fullName, email, username, password } = req.body
     console.log("email: ", email)
 
@@ -27,12 +29,13 @@ const registerUser = asyncHandler(async (req, res) => {
     //     throw new ApiError(400, "Full name is required ")
     // } // Manual check all the fields and it will be lengthy..
 
-    //Another method will be this below: 
+    //Another method will be this below for validation: 
     if (
         [fullName, email, username, password].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
+
     //Check for existing user!!
     const existingUser = User.findOne({ //Here we can also use User.find()
         $or: [{ username }, { email }]
@@ -41,11 +44,11 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User with email or username already exists")
     }
 
+    //Check for avatar as well as coverImage
     const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-
-    if (avatarLocalPath) {
+    if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar is required")
     }
 
@@ -58,6 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Avatar is required")
     }
 
+    //User Creation
     const user = await User.create({
         fullName,
         avatar: avatar.url,
